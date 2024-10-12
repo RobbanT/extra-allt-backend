@@ -15,6 +15,6 @@ public class Controller {
 
     @GetMapping
     public String getMethodName() {
-        return "Icke hemlig nyckel: " + nonsecretKey + " HEMLIG NYCKEL: " + secretKey;
+        return "";
     }
 }
