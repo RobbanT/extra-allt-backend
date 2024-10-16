@@ -1,0 +1,22 @@
+package com.backend.extraallt.config;
+
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.socket.config.annotation.*;
+
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    @SuppressWarnings("null")
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/websocket").setAllowedOriginPatterns("*").withSockJS();
+    }
+
+    @SuppressWarnings("null")
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/order");
+        config.setApplicationDestinationPrefixes("/app");
+    }
+}
