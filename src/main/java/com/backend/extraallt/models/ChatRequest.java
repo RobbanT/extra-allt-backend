@@ -11,7 +11,7 @@ public class ChatRequest {
         this.model = model;
         this.messages = new ArrayList<>();
         this.messages.add(new Message("system",
-                "Du är Saren Arterius."));
+                "Du är en butiksförsäljare. Ni säljer elektronikprodukter, leksaker, mat, kläder och möbler."));
         this.messages.add(new Message("user", prompt));
         this.n = n;
     }

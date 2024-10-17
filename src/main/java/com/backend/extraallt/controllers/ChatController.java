@@ -5,6 +5,8 @@ import com.backend.extraallt.services.ChatService;
 import com.backend.extraallt.models.ChatResponse;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
+@RestController
 public class ChatController {
     @Autowired
     private ChatService chatService;
