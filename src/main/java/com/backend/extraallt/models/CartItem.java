@@ -1,7 +1,7 @@
 package com.backend.extraallt.models;
 
 public class CartItem extends Product {
-    Long quantity;
+    private Long quantity;
 
     public CartItem(Categories category, String title, String image, String description, Long price, Long quantity) {
         super(category, title, image, description, price);

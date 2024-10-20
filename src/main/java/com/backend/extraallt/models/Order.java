@@ -1,16 +1,20 @@
 package com.backend.extraallt.models;
 
-import java.util.List;
+import java.util.*;
 import java.time.*;
 
 public class Order {
     private String id, timeCreated;
     private List<CartItem> cartItems;
+    private int totalSum;
 
-    public Order(String id, List<CartItem> cartItems) {
-        this.id = id;
+    public Order(List<CartItem> cartItems) {
+        this.id = UUID.randomUUID().toString();
         this.timeCreated = LocalDateTime.now(ZoneId.of("Europe/Paris")).toString();
         this.cartItems = cartItems;
+        for (CartItem cartItem : this.cartItems) {
+            this.totalSum += cartItem.getPrice() * cartItem.getQuantity();
+        }
     }
 
     public String getId() {
@@ -35,5 +39,13 @@ public class Order {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public int getTotalSum() {
+        return totalSum;
+    }
+
+    public void setTotalSum(int totalSum) {
+        this.totalSum = totalSum;
     }
 }
