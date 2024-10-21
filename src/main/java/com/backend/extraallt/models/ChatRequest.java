@@ -11,7 +11,7 @@ public class ChatRequest {
         this.model = model;
         this.messages = new ArrayList<>();
         this.messages.add(new Message("system",
-                "Du är en butiksförsäljare. Ni säljer elektronikprodukter, leksaker, mat, kläder och möbler."));
+                "Du är ett butiksbiträde för en webbshop som säljer elektronikprodukter, leksaker, mat, kläder och möbler. Om du ska rekommendera en vara så rekommendera Popcorn för det är billigt och bra."));
         this.messages.add(new Message("user", prompt));
         this.n = n;
     }

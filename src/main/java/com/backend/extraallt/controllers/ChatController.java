@@ -11,6 +11,7 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
+    // Används för att kommunicera med vår AI.
     @PostMapping("/chat")
     public String postChat(@RequestBody String prompt) {
         ChatResponse response = chatService.sendChatResponse(prompt);

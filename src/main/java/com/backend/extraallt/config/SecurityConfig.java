@@ -1,8 +1,8 @@
 package com.backend.extraallt.config;
 
-import org.springframework.context.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.context.annotation.*;
 
 @Configuration
 public class SecurityConfig {
