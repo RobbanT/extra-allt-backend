@@ -5,47 +5,58 @@ import com.stripe.param.checkout.SessionCreateParams.*;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.stereotype.Service;
 import com.backend.extraallt.models.CartItem;
+import com.backend.extraallt.models.Order;
 import com.stripe.model.checkout.Session;
 import com.stripe.Stripe;
 import java.util.*;
 
 @Service
 public class CheckoutService {
+    private UserService userService;
+
     @Value("${stripe.api.key}")
     String stripeApiKey;
 
     private LineItem addProduct(String title, String imagePath, Long price, Long quantity) {
         return SessionCreateParams.LineItem.builder().setPriceData(
-            SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency("sek").setProductData(
-                    SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                    .setName(title)
-                    .addImage(imagePath)
-                    .build()
-                ).setUnitAmount(price).build()
-            ).setQuantity(quantity).build();
+                SessionCreateParams.LineItem.PriceData.builder()
+                        .setCurrency("sek").setProductData(
+                                SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                        .setName(title)
+                                        .addImage(imagePath)
+                                        .build())
+                        .setUnitAmount(price).build())
+                .setQuantity(quantity).build();
     }
-    
-    public Map<String, String> createCheckoutSession(List<CartItem> cart) {
+
+    public Map<String, String> createCheckoutSession(String username, List<CartItem> cart) {
         Stripe.apiKey = "stripeApiKey";
         List<LineItem> lineItems = new ArrayList<>();
-        
-        for (CartItem cartItem : cart) {
-            lineItems.add(addProduct(cartItem.getTitle(), cartItem.getImage(), cartItem.getPrice(), cartItem.getQuantity()));
-        }
-        
-        SessionCreateParams params = SessionCreateParams.builder()
-            .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-            .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setRedirectOnCompletion(RedirectOnCompletion.NEVER)
-            .addAllLineItem(lineItems).build();
+        if (cart != null) {
 
-        Map<String, String> map = new HashMap<>();
-        try {
-            map.put("clientSecret", Session.create(params).getRawJsonObject().getAsJsonPrimitive("client_secret").getAsString());
-        } catch (Exception e) {
-            System.out.println("Fel: " + e.getMessage());
+            for (CartItem cartItem : cart) {
+                lineItems.add(
+                        addProduct(cartItem.getTitle(), cartItem.getImage(), cartItem.getPrice(),
+                                cartItem.getQuantity()));
+            }
+
+            SessionCreateParams params = SessionCreateParams.builder()
+                    .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
+                    .setMode(SessionCreateParams.Mode.PAYMENT)
+                    .setRedirectOnCompletion(RedirectOnCompletion.NEVER)
+                    .addAllLineItem(lineItems).build();
+
+            Map<String, String> map = new HashMap<>();
+            try {
+                map.put("clientSecret",
+                        Session.create(params).getRawJsonObject().getAsJsonPrimitive("client_secret").getAsString());
+            } catch (Exception e) {
+                System.out.println("Fel: " + e.getMessage());
+            }
+            userService.setOrder(username, new Order(cart));
+            return map;
         }
-        return map;
+        return new HashMap<>();
     }
+
 }
