@@ -25,12 +25,15 @@ public class UserControllerTests {
         assertTrue(userController.setUser(user1) != null);
         assertTrue(userController.setUser(user2) != null);
         assertTrue(userController.setUser(user3) != null);
+        // Kan inte registrera en användare med samma användarnamn.
+        assertTrue(userController.setUser(user3) == null);
     }
 
     @Test
     public void login() {
         // Test för att se om en användare kan logga in.
         User user1 = new User("Roberto", "123456");
+        // Kommer inte kunna logga in denna användare då den inte är registrerad.
         User user2 = new User(UUID.randomUUID().toString(), "123456");
         assertTrue(userController.getUser(user1.getUsername(), "123456") != null);
         assertTrue(userController.getUser(user2.getUsername(), "123456") == null);

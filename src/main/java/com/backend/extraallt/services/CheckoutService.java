@@ -32,31 +32,30 @@ public class CheckoutService {
     public Map<String, String> createCheckoutSession(String username, List<CartItem> cart) {
         Stripe.apiKey = "stripeApiKey";
         List<LineItem> lineItems = new ArrayList<>();
-        if (cart != null) {
-
-            for (CartItem cartItem : cart) {
-                lineItems.add(
-                        addProduct(cartItem.getTitle(), cartItem.getImage(), cartItem.getPrice(),
-                                cartItem.getQuantity()));
-            }
-
-            SessionCreateParams params = SessionCreateParams.builder()
-                    .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
-                    .setMode(SessionCreateParams.Mode.PAYMENT)
-                    .setRedirectOnCompletion(RedirectOnCompletion.NEVER)
-                    .addAllLineItem(lineItems).build();
-
-            Map<String, String> map = new HashMap<>();
-            try {
-                map.put("clientSecret",
-                        Session.create(params).getRawJsonObject().getAsJsonPrimitive("client_secret").getAsString());
-            } catch (Exception e) {
-                System.out.println("Fel: " + e.getMessage());
-            }
-            userService.setOrder(username, new Order(cart));
-            return map;
+        if (cart == null || cart.isEmpty()) {
+            return new HashMap<>();
         }
-        return new HashMap<>();
-    }
 
+        for (CartItem cartItem : cart) {
+            lineItems.add(
+                    addProduct(cartItem.getTitle(), cartItem.getImage(), cartItem.getPrice(),
+                            cartItem.getQuantity()));
+        }
+
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setUiMode(SessionCreateParams.UiMode.EMBEDDED)
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setRedirectOnCompletion(RedirectOnCompletion.NEVER)
+                .addAllLineItem(lineItems).build();
+
+        Map<String, String> map = new HashMap<>();
+        try {
+            map.put("clientSecret",
+                    Session.create(params).getRawJsonObject().getAsJsonPrimitive("client_secret").getAsString());
+        } catch (Exception e) {
+            System.out.println("Fel: " + e.getMessage());
+        }
+        userService.setOrder(username, new Order(cart));
+        return map;
+    }
 }

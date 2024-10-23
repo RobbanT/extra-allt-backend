@@ -5,7 +5,8 @@ import java.util.List;
 public class ChatResponse {
     private List<Choice> choices;
 
-    public ChatResponse() {}
+    public ChatResponse() {
+    }
 
     public List<Choice> getChoices() {
         return choices;
@@ -18,7 +19,8 @@ public class ChatResponse {
     public static class Choice {
         private Message message;
 
-        private Choice() { }
+        private Choice() {
+        }
 
         public Message getMessage() {
             return message;
