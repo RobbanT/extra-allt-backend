@@ -12,9 +12,14 @@ public class Order {
         this.id = UUID.randomUUID().toString();
         this.timeCreated = LocalDateTime.now(ZoneId.of("Europe/Paris")).toString();
         this.cartItems = cartItems;
-        for (CartItem cartItem : this.cartItems) {
-            this.totalSum += cartItem.getPrice() * cartItem.getQuantity();
+        if (cartItems != null) {
+            for (CartItem cartItem : this.cartItems) {
+                this.totalSum += cartItem.getPrice() * cartItem.getQuantity();
+            }
+        } else {
+            this.totalSum = 0;
         }
+
     }
 
     public String getId() {
