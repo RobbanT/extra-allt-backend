@@ -24,8 +24,7 @@ public class UserService {
 
     public User getUser(String username, String password) {
         return findUser(username) != null &&
-            bcryptEncoder.matches(password, findUser(username).getPassword()) ? 
-            findUser(username) : null;
+                bcryptEncoder.matches(password, findUser(username).getPassword()) ? findUser(username) : null;
     }
 
     public User setUser(User user) {
@@ -42,8 +41,10 @@ public class UserService {
     }
 
     public Order setOrder(String username, Order order) {
+        User user = findUser(username);
+        user.getOrders().add(order);
         mongoOperations.updateFirst(new Query().addCriteria((Criteria.where("username").is(username))),
-            Update.update("orders", findUser(username).getOrders().add(order)), User.class);
+                Update.update("orders", user.getOrders()), User.class);
         return order;
     }
 }

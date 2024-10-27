@@ -1,5 +1,6 @@
 package com.backend.extraallt.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import com.stripe.param.checkout.SessionCreateParams.*;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -12,6 +13,7 @@ import java.util.*;
 
 @Service
 public class CheckoutService {
+    @Autowired
     private UserService userService;
 
     @Value("${stripe.api.key}")
@@ -30,7 +32,7 @@ public class CheckoutService {
     }
 
     public Map<String, String> createCheckoutSession(String username, List<CartItem> cart) {
-        Stripe.apiKey = "stripeApiKey";
+        Stripe.apiKey = stripeApiKey;
         List<LineItem> lineItems = new ArrayList<>();
         if (cart == null || cart.isEmpty()) {
             return new HashMap<>();
