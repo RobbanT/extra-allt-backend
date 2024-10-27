@@ -14,8 +14,7 @@ public class StompController {
         this.stompService = stompService;
     }
 
-    // Används när vi vill informera alla besökare på webbshoppen att någon har lagt
-    // en order.
+    // Används när vi vill informera alla besökare på webbshoppen att någon har lagt en order.
     @MessageMapping("/placed")
     @SendTo("/order/placed")
     public Map<String, Order> placeOrder(String username, Order order) {

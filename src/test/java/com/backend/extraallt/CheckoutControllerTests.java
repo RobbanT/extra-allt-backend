@@ -20,7 +20,7 @@ public class CheckoutControllerTests {
     @Test
     public void createCheckoutSession() {
         // Kollar om man kan skicka in en tom varukorg.
-        assertTrue(checkoutController.createCheckoutSession("Roberto", null).isEmpty());
-        assertTrue(checkoutController.createCheckoutSession("Roberto", new ArrayList<CartItem>()).isEmpty());
+        assertTrue(checkoutController.createCheckoutSession(null).isEmpty());
+        assertTrue(checkoutController.createCheckoutSession(new ArrayList<CartItem>()).isEmpty());
     }
 }

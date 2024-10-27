@@ -23,9 +23,7 @@ public class UserService {
     }
 
     public User getUser(String username, String password) {
-        return findUser(username) != null &&
-            bcryptEncoder.matches(password, findUser(username).getPassword()) ? 
-            findUser(username) : null;
+        return findUser(username) != null && bcryptEncoder.matches(password, findUser(username).getPassword()) ? findUser(username) : null;
     }
 
     public User setUser(User user) {
@@ -41,9 +39,10 @@ public class UserService {
         return findUser(username).getOrders();
     }
 
-    public Order setOrder(String username, Order order) {
-        mongoOperations.updateFirst(new Query().addCriteria((Criteria.where("username").is(username))),
-            Update.update("orders", findUser(username).getOrders().add(order)), User.class);
-        return order;
+    public Order setOrder(String username, List<CartItem> cart) {
+        User user = findUser(username);
+        user.getOrders().add(new Order(cart));
+        mongoOperations.updateFirst(new Query().addCriteria((Criteria.where("username").is(username))), Update.update("orders", user.getOrders()), User.class);
+        return new Order(cart);
     }
 }
