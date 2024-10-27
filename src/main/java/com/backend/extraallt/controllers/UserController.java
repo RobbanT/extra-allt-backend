@@ -40,7 +40,7 @@ public class UserController {
 
     // Skapar en order för en viss användare.
     @PostMapping("/user/{username}/order")
-    public Order setPost(@PathVariable String username, @RequestBody Order order) {
-        return userService.setOrder(username, order);
+    public Order setOrder(@PathVariable String username, @RequestBody List<CartItem> cart) {
+        return userService.setOrder(username, cart);
     }
 }
