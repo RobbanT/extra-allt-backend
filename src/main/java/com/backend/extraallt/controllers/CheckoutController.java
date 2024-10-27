@@ -16,7 +16,7 @@ public class CheckoutController {
 
     // Används för att skapa en kassa med Stripe.
     @PostMapping("/create-checkout-session/{username}")
-    public Map<String, String> createCheckoutSession(@PathVariable String username, @RequestBody List<CartItem> cart) {
-        return checkoutService.createCheckoutSession(username, cart);
+    public Map<String, String> createCheckoutSession(@RequestBody List<CartItem> cart) {
+        return checkoutService.createCheckoutSession(cart);
     }
 }

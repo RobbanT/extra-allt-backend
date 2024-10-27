@@ -6,7 +6,6 @@ import com.stripe.param.checkout.SessionCreateParams.*;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.stereotype.Service;
 import com.backend.extraallt.models.CartItem;
-import com.backend.extraallt.models.Order;
 import com.stripe.model.checkout.Session;
 import com.stripe.Stripe;
 import java.util.*;
@@ -31,7 +30,7 @@ public class CheckoutService {
                 .setQuantity(quantity).build();
     }
 
-    public Map<String, String> createCheckoutSession(String username, List<CartItem> cart) {
+    public Map<String, String> createCheckoutSession(List<CartItem> cart) {
         Stripe.apiKey = stripeApiKey;
         List<LineItem> lineItems = new ArrayList<>();
         if (cart == null || cart.isEmpty()) {
@@ -57,7 +56,6 @@ public class CheckoutService {
         } catch (Exception e) {
             System.out.println("Fel: " + e.getMessage());
         }
-        userService.setOrder(username, new Order(cart));
         return map;
     }
 }
