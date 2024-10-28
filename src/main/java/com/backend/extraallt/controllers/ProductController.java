@@ -31,5 +31,4 @@ public class ProductController {
     public List<Product> getProductCategory(@PathVariable String category) {
         return productService.getProductCategory(category);
     }
-
 }
